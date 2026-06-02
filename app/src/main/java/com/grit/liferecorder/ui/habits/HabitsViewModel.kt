@@ -1,0 +1,4 @@
+package com.grit.liferecorder.ui.habits
+import androidx.lifecycle.*; import com.grit.liferecorder.core.date.TimeUtils; import com.grit.liferecorder.data.local.entity.TrackedActionEntity; import com.grit.liferecorder.data.repository.HabitRepository; import kotlinx.coroutines.flow.*; import kotlinx.coroutines.launch
+data class HabitsUiState(val actions:List<TrackedActionEntity> = emptyList())
+class HabitsViewModel(private val repository:HabitRepository):ViewModel(){ val state=repository.observeActions().map{HabitsUiState(it)}.stateIn(viewModelScope,SharingStarted.WhileSubscribed(5000),HabitsUiState()); fun add(name:String,label:String){ if(name.isNotBlank()) viewModelScope.launch{ repository.save(TrackedActionEntity(name=name,defaultLabel=label,createdAt=TimeUtils.now(),updatedAt=TimeUtils.now())) } }; fun log(action:TrackedActionEntity,label:String=action.defaultLabel,note:String?=null)=viewModelScope.launch{repository.log(action,label,note)} }
