@@ -1,0 +1,6 @@
+package com.grit.liferecorder.data.local
+import android.content.Context; import androidx.room.*; import com.grit.liferecorder.core.constants.AppConstants; import com.grit.liferecorder.data.local.dao.*; import com.grit.liferecorder.data.local.entity.*
+@Database(entities=[CategoryEntity::class,ProjectEntity::class,TaskEntity::class,TrackedActionEntity::class,ActionLogEntity::class,RoutineEntity::class,RoutineStepEntity::class,RoutineOccurrenceEntity::class,JournalEntryEntity::class], version=1, exportSchema=true)
+@TypeConverters(Converters::class)
+abstract class GritDatabase:RoomDatabase(){ abstract fun categoryDao():CategoryDao; abstract fun projectDao():ProjectDao; abstract fun taskDao():TaskDao; abstract fun trackedActionDao():TrackedActionDao; abstract fun actionLogDao():ActionLogDao; abstract fun routineDao():RoutineDao; abstract fun routineStepDao():RoutineStepDao; abstract fun routineOccurrenceDao():RoutineOccurrenceDao; abstract fun journalDao():JournalDao
+companion object { @Volatile private var INSTANCE:GritDatabase?=null; fun get(context:Context)=INSTANCE?: synchronized(this){ INSTANCE?: Room.databaseBuilder(context.applicationContext,GritDatabase::class.java,AppConstants.DATABASE_NAME).fallbackToDestructiveMigration().build().also{INSTANCE=it} } } }

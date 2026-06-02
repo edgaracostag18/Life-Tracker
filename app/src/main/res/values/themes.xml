@@ -1,0 +1,1 @@
+<resources><style name="Theme.Grit" parent="android:style/Theme.Material.NoActionBar"><item name="android:windowBackground">@color/grit_background</item></style></resources>
